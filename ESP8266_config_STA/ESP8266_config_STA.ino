@@ -24,12 +24,14 @@ bool LED2status = LOW;
 
 void setup() {
   Serial.begin(115200);
+  Serial.swap();
   delay(100);
   pinMode(LED1pin, OUTPUT);
   pinMode(LED2pin, OUTPUT);
 
-  Serial.println("Connecting to ");
+  Serial.println("Connecting to \n");
   Serial.println(ssid);
+  Serial.println("\n");
 
   //WiFi.softAP(ssid_ap, password_ap);
   //WiFi.softAPConfig(local_ip, gateway, subnet);
@@ -40,11 +42,12 @@ void setup() {
   //check wi-fi is connected to wi-fi network
   while (WiFi.status() != WL_CONNECTED) {
   delay(1000);
-  Serial.print(".");
+  Serial.print(".\n");
   }
-  Serial.println("");
-  Serial.println("WiFi connected..!");
+  Serial.println("\n");
+  Serial.println("WiFi connected..!\n");
   Serial.print("Got IP: ");  Serial.println(WiFi.localIP());
+  Serial.print("\n");
 
   server.on("/", handle_OnConnect);
   server.on("/led1on", handle_led1on);
@@ -72,31 +75,31 @@ void loop() {
 void handle_OnConnect() {
   LED1status = LOW;
   LED2status = LOW;
-  Serial.println("GPIO7 Status: OFF | GPIO6 Status: OFF");
+  Serial.println("GPIO7 Status: OFF | GPIO6 Status: OFF\n");
   server.send(200, "text/html", SendHTML(LED1status,LED2status)); 
 }
 
 void handle_led1on() {
   LED1status = HIGH;
-  Serial.println("GPIO7 Status: ON");
+  Serial.println("GPIO7 Status: ON\n");
   server.send(200, "text/html", SendHTML(true,LED2status)); 
 }
 
 void handle_led1off() {
   LED1status = LOW;
-  Serial.println("GPIO7 Status: OFF");
+  Serial.println("GPIO7 Status: OFF\n");
   server.send(200, "text/html", SendHTML(false,LED2status)); 
 }
 
 void handle_led2on() {
   LED2status = HIGH;
-  Serial.println("GPIO6 Status: ON");
+  Serial.println("GPIO6 Status: ON\n");
   server.send(200, "text/html", SendHTML(LED1status,true)); 
 }
 
 void handle_led2off() {
   LED2status = LOW;
-  Serial.println("GPIO6 Status: OFF");
+  Serial.println("GPIO6 Status: OFF\n");
   server.send(200, "text/html", SendHTML(LED1status,false)); 
 }
 
